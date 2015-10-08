@@ -25,7 +25,6 @@ Plugin 'rake.vim'
 Plugin 'jgdavey/vim-blockle'
 
 " Specs
-Plugin 'thoughtbot/vim-rspec'
 Plugin 'tpope/vim-dispatch'
 Plugin 'skalnik/vim-vroom'
 
@@ -39,6 +38,7 @@ Plugin 'Syntastic'
 Plugin 'tpope/vim-fugitive'
 Plugin 'jiangmiao/auto-pairs'
 Plugin 'scrooloose/nerdcommenter'
+Plugin 'AndrewRadev/splitjoin.vim'
 
 " Look and feel
 Plugin 'Solarized'
@@ -110,11 +110,7 @@ let g:rails_projections = {
 \ }}
 
 
-" RSpec vim mappings
-let g:rspec_command = 'bundle exec rspec {spec}'
-let g:rspec_runner = 'os_x_iterm'
-map <Leader>rt :call RunNearestSpec()<CR>
-map <Leader>rf :call RunCurrentSpecFile()<CR>
+" Vroom mappings
 let g:vroom_use_dispatch = 1
 let g:vroom_ignore_color_flag = 1
 
@@ -265,7 +261,7 @@ highlight ExtraWhitespace ctermbg=red guibg=red
 au ColorScheme * highlight ExtraWhitespace guibg=red
 au BufEnter * match ExtraWhitespace /\s\+$/
 au InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
-au InsertLeave * match ExtraWhiteSpace /\s\+$/
+au InsertLeave * match ExtraWhitespace /\s\+$/
 
 " Removes trailing spaces
 function TrimWhiteSpace()
@@ -288,6 +284,18 @@ nnoremap K :Ag "\b<C-R><C-W>\b"<CR>:cw<CR>
 " Auto complete
 let g:stop_autocomplete=0
 
+" Never used it ;)
+nnoremap Q <nop>
+
+" Make debugger statements painfully obvious
+au BufEnter *.rb syn match error contained "\<binding.pry\>"
+
+" Handy
+cnoremap w!! %!sudo tee > /dev/null %
+
+" Auto save
+autocmd BufLeave,FocusLost * silent! update
+
 " ┌───────────────────────────────────┐
 " │             Shortcuts             │
 " └───────────────────────────────────┘
@@ -301,6 +309,10 @@ nnoremap <C-L> :nohls<CR><C-L>
 " Improve 'n' command (for searches)
 nmap n nzz
 nmap N Nzz
+
+" Quickfix window
+map <Leader>q :copen<CR>
+map <Leader>qq :ccl<CR>
 
 " ┌───────────────────────────────────┐
 " │              Aliases              │
@@ -346,7 +358,3 @@ if has('mac')
     set guifont=Menlo:h14
   endif
 endif
-
-" Quickfix window
-map <Leader>q :copen<CR>
-map <Leader>qq :ccl<CR>
