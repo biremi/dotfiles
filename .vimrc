@@ -31,6 +31,8 @@ Plugin 'skalnik/vim-vroom'
 " Navigate and search
 Plugin 'ctrlp.vim'
 Plugin 'rking/ag.vim'
+" Most recent files
+Plugin 'yegappan/mru'
 
 " General programming
 Plugin 'surround.vim'
@@ -38,7 +40,6 @@ Plugin 'Syntastic'
 Plugin 'tpope/vim-fugitive'
 Plugin 'jiangmiao/auto-pairs'
 Plugin 'scrooloose/nerdcommenter'
-Plugin 'AndrewRadev/splitjoin.vim'
 
 " Look and feel
 Plugin 'Solarized'
@@ -245,11 +246,14 @@ set guifont=Menlo:h16
 syntax on
 
 " NetRW Browsing
-let g:netrw_keepdir=0
+let g:netrw_keepdir=1
 let g:netrw_fastbrowse=0
 
 " Annoying visualbel
 set visualbell t_vb=
+
+" Ctags
+set tags+=./tags
 
 " ┌───────────────────────────────────┐
 " │             Functions             │
@@ -313,6 +317,8 @@ nmap N Nzz
 " Quickfix window
 map <Leader>q :copen<CR>
 map <Leader>qq :ccl<CR>
+" MRU
+map <Leader>f :MRU<CR>
 
 " ┌───────────────────────────────────┐
 " │              Aliases              │
@@ -350,9 +356,14 @@ au BufNewFile,BufRead *.hbs        set filetype=html
 " └───────────────────────────────────┘
 "
 " Custom font size depending on window size
+
+if has("gui_running")
+  set fuopt+=maxhorz
+end
+
 if has('mac')
-  let desktop_height = system("osascript -e 'tell application \"Finder\" to get bounds of window of desktop' | cut -d ' ' -f 4")
-  if desktop_height > 900
+  let desktop_width = system("osascript -e 'tell application \"Finder\" to get bounds of window of desktop' | cut -d ',' -f 3 | xargs")
+  if desktop_width > 1440
     set guifont=Menlo:h16
   else
     set guifont=Menlo:h14
