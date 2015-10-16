@@ -40,6 +40,7 @@ Plugin 'Syntastic'
 Plugin 'tpope/vim-fugitive'
 Plugin 'jiangmiao/auto-pairs'
 Plugin 'scrooloose/nerdcommenter'
+Plugin 'ervandew/supertab'
 
 " Look and feel
 Plugin 'Solarized'
