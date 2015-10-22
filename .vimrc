@@ -38,6 +38,7 @@ Plugin 'yegappan/mru'
 Plugin 'surround.vim'
 Plugin 'Syntastic'
 Plugin 'tpope/vim-fugitive'
+Plugin 'airblade/vim-gitgutter'
 Plugin 'jiangmiao/auto-pairs'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'ervandew/supertab'
@@ -241,7 +242,7 @@ set noswapfile
 "Font and colorscheme
 set background=dark
 colorscheme solarized
-set guifont=Menlo:h16
+set guifont=Hack:h16
 
 " Syntax on
 syntax on
@@ -365,8 +366,8 @@ end
 if has('mac')
   let desktop_width = system("osascript -e 'tell application \"Finder\" to get bounds of window of desktop' | cut -d ',' -f 3 | xargs")
   if desktop_width > 1440
-    set guifont=Menlo:h16
+    set guifont=Hack:h16
   else
-    set guifont=Menlo:h14
+    set guifont=Hack:h14
   endif
 endif
