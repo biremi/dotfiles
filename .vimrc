@@ -7,6 +7,7 @@ filetype off                  " required
 "Set mapleader
 let mapleader = ","
 let g:mapleader = ","
+let g:neocomplcache_enable_at_startup = 1
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -15,17 +16,23 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
 
-" CoffeScript
+" JS & CoffeScript
 Plugin 'vim-coffee-script'
+" HTML
+Plugin 'mattn/emmet-vim'
+Plugin 'alvan/vim-closetag'
+Plugin 'gorodinskiy/vim-coloresque'
 
 " Rails and Ruby
+Plugin 'vim-ruby/vim-ruby'
 Plugin 'rails.vim'
 Plugin 'endwise.vim'
 Plugin 'rake.vim'
 Plugin 'jgdavey/vim-blockle'
 
-" Specs
+" Async and specs
 Plugin 'tpope/vim-dispatch'
+Plugin 'radenling/vim-dispatch-neovim'
 Plugin 'skalnik/vim-vroom'
 
 " Navigate and search
@@ -33,6 +40,8 @@ Plugin 'ctrlp.vim'
 Plugin 'rking/ag.vim'
 " Most recent files
 Plugin 'yegappan/mru'
+Plugin 'easymotion/vim-easymotion'
+Plugin 'Shougo/neocomplcache'
 
 " General programming
 Plugin 'surround.vim'
@@ -256,6 +265,9 @@ set visualbell t_vb=
 
 " Ctags
 set tags+=./tags
+
+" Airline hook
+set laststatus=2
 
 " ┌───────────────────────────────────┐
 " │             Functions             │
