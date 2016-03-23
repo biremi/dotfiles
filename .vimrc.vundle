@@ -1,5 +1,5 @@
 " ┌───────────────────────────────────┐
-" │             Neobundle             │
+" │              Vundle               │
 " └───────────────────────────────────┘
 
 set nocompatible              " be iMproved, required
@@ -17,91 +17,80 @@ let g:mapleader = ","
 " Should be here ;(
 let g:neocomplcache_enable_at_startup = 1
 
-"NeoBundle Scripts-----------------------------
-if &compatible
-  set nocompatible               " Be iMproved
-endif
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
 
-" Required:
-set runtimepath^=/Users/remi/.vim/bundle/neobundle.vim/
-
-" Required:
-call neobundle#begin(expand('/Users/remi/.vim/bundle'))
-
-" Let NeoBundle manage NeoBundle
-" Required:
-NeoBundleFetch 'Shougo/neobundle.vim'
-
-" Add or remove your Bundles here:
+" let Vundle manage Vundle, required
+Plugin 'gmarik/Vundle.vim'
 
 " JS/COffee/Typescript
-NeoBundle 'vim-coffee-script'
-NeoBundle 'leafgarland/typescript-vim'
-NeoBundle 'Quramy/tsuquyomi'
+Plugin 'vim-coffee-script'
+Plugin 'leafgarland/typescript-vim'
+Plugin 'Quramy/tsuquyomi'
 
 " HTML
-NeoBundle 'mattn/emmet-vim'
-NeoBundle 'alvan/vim-closetag'
+Plugin 'mattn/emmet-vim'
+Plugin 'alvan/vim-closetag'
 
 " Rails and Ruby
-NeoBundle 'vim-ruby/vim-ruby'
-NeoBundle 'rails.vim'
-NeoBundle 'endwise.vim'
-NeoBundle 'rake.vim'
-NeoBundle 'jgdavey/vim-blockle'
+Plugin 'vim-ruby/vim-ruby'
+Plugin 'rails.vim'
+Plugin 'endwise.vim'
+Plugin 'rake.vim'
+Plugin 'jgdavey/vim-blockle'
 
 " Async and specs
-NeoBundle 'tpope/vim-dispatch'
-NeoBundle 'skalnik/vim-vroom'
+Plugin 'tpope/vim-dispatch'
+Plugin 'skalnik/vim-vroom'
 
 " Navigate and search
-NeoBundle 'ctrlpvim/ctrlp.vim'
-NeoBundle 'rking/ag.vim'
+Plugin 'ctrlp.vim'
+Plugin 'rking/ag.vim'
 " Most recent files
-NeoBundle 'yegappan/mru'
-NeoBundle 'easymotion/vim-easymotion'
-NeoBundle 'Shougo/neocomplcache'
-NeoBundle 'Shougo/vimproc'
+Plugin 'yegappan/mru'
+Plugin 'easymotion/vim-easymotion'
+Plugin 'Shougo/neocomplcache'
+Plugin 'Shougo/vimproc'
 
 " General programming
-NeoBundle 'surround.vim'
-NeoBundle 'Syntastic'
-NeoBundle 'tpope/vim-fugitive'
-NeoBundle 'airblade/vim-gitgutter'
-NeoBundle 'Raimondi/delimitMate'
-NeoBundle 'scrooloose/nerdcommenter'
-NeoBundle 'ervandew/supertab'
-NeoBundle 'AndrewRadev/linediff.vim'
-NeoBundle 'AndrewRadev/switch.vim'
-NeoBundle 'msanders/snipmate.vim'
-NeoBundle 'junegunn/vim-easy-align'
+Plugin 'surround.vim'
+Plugin 'Syntastic'
+Plugin 'tpope/vim-fugitive'
+Plugin 'airblade/vim-gitgutter'
+"Plugin 'jiangmiao/auto-pairs'
+Plugin 'Raimondi/delimitMate'
+Plugin 'scrooloose/nerdcommenter'
+Plugin 'ervandew/supertab'
+Plugin 'AndrewRadev/linediff.vim'
+Plugin 'AndrewRadev/switch.vim'
+Plugin 'msanders/snipmate.vim'
+Plugin 'junegunn/vim-easy-align'
 
 " Look and feel
-NeoBundle 'Solarized'
-NeoBundle 'flazz/vim-colorschemes'
-NeoBundle 'bling/vim-airline'
-NeoBundle 'Shougo/unite.vim'
-NeoBundle 'ujihisa/unite-colorscheme'
+Plugin 'Solarized'
+Plugin 'flazz/vim-colorschemes'
+Plugin 'bling/vim-airline'
+Plugin 'Shougo/unite.vim'
+Plugin 'ujihisa/unite-colorscheme'
 
-"NeoBundle 'git://github.com/vim-scripts/matchit.zip'
+Plugin 'git://github.com/vim-scripts/matchit.zip'
 
-" Defaults
-"NeoBundle 'Shougo/neosnippet.vim'
-"NeoBundle 'Shougo/neosnippet-snippets'
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
 
-" You can specify revision/branch/tag.
-NeoBundle 'Shougo/vimshell', { 'rev' : '3787e5' }
-
-" Required:
-call neobundle#end()
-
-" Required:
-filetype plugin indent on
-
-" If there are uninstalled bundles found on startup,
-" this will conveniently prompt you to install them.
-NeoBundleCheck
-"End NeoBundle Scripts-------------------------
+filetype plugin indent on    " required
+" To ignore plugin indent changes, instead use:
+"filetype plugin on
+"
+" Brief help
+" :PluginList       - lists configured plugins
+" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+" :PluginSearch foo - searches for foo; append `!` to refresh local cache
+" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
+"
+" see :h vundle for more details or wiki for FAQ
+" Put your non-Plugin stuff after this line
 
 " ┌───────────────────────────────────┐
 " │       Plugins customizations      │
@@ -175,9 +164,9 @@ let g:syntastic_loc_list_height=5
 
 let g:syntastic_ruby_checkers = ['mri']
 
-"set statusline+=%#warningmsg#
-"set statusline+=%{SyntasticStatuslineFlag()}
-"set statusline+=%*
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
 let g:syntastic_html_tidy_ignore_errors=[" proprietary attribute \"ng-"]
 let g:syntastic_mode_map={ 'mode': 'active',
                          \ 'active_filetypes': ['ruby', 'javascript', 'typescript'],
@@ -202,7 +191,6 @@ autocmd FileType xml        set omnifunc=xmlcomplete#CompleteTags
 autocmd FileType php        set omnifunc=phpcomplete#CompletePHP
 autocmd FileType c          set omnifunc=ccomplete#Complete
 autocmd FileType typescript set omnifunc=tsuquyomi#complete
-autocmd FileType typescript setlocal completeopt+=menu,preview
 
 autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
 autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
