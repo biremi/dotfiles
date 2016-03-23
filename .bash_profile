@@ -2,8 +2,11 @@ export PATH="/usr/local/bin:/usr/local/sbin:~/bin:$PATH"
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm
+
 #Aliases
-alias ll="ls -la"
+alias ll="ls -laG"
 alias e="mvim"
 
 alias gs="git status"
@@ -18,6 +21,8 @@ alias gpuh="git push origin head"
 
 alias be="bundle exec"
 alias ber="bundle exec rspec"
+alias ztest="zeus test"
+alias jtest="TZ='US/Pacific' spring rake spec:javascript"
 alias jber="JS_DRIVER=selenium bundle exec rspec"
 alias bcm="bb-flow commit -m"
 
@@ -72,6 +77,8 @@ export PS1
 
 export EDITOR='mvim -f'
 source ~/Work/brightbytes/brightbytes/.env
+source ~/Work/brightbytes/dpl-admin/.env
+source ~/Work/brightbytes/common-ui/.env
 #source ~/.oh-my-git/prompt.sh
 
 #bash completions

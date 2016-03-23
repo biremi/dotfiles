@@ -4,9 +4,17 @@
 
 set nocompatible              " be iMproved, required
 filetype off                  " required
+" Disable hover tooltips
+if has("gui_running")
+  set noballooneval
+  let g:netrw_nobeval = 1
+end
+
 "Set mapleader
 let mapleader = ","
 let g:mapleader = ","
+
+" Should be here ;(
 let g:neocomplcache_enable_at_startup = 1
 
 " set the runtime path to include Vundle and initialize
@@ -16,12 +24,14 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
 
-" JS & CoffeScript
+" JS/COffee/Typescript
 Plugin 'vim-coffee-script'
+Plugin 'leafgarland/typescript-vim'
+Plugin 'Quramy/tsuquyomi'
+
 " HTML
 Plugin 'mattn/emmet-vim'
 Plugin 'alvan/vim-closetag'
-Plugin 'gorodinskiy/vim-coloresque'
 
 " Rails and Ruby
 Plugin 'vim-ruby/vim-ruby'
@@ -32,7 +42,6 @@ Plugin 'jgdavey/vim-blockle'
 
 " Async and specs
 Plugin 'tpope/vim-dispatch'
-Plugin 'radenling/vim-dispatch-neovim'
 Plugin 'skalnik/vim-vroom'
 
 " Navigate and search
@@ -42,19 +51,28 @@ Plugin 'rking/ag.vim'
 Plugin 'yegappan/mru'
 Plugin 'easymotion/vim-easymotion'
 Plugin 'Shougo/neocomplcache'
+Plugin 'Shougo/vimproc'
 
 " General programming
 Plugin 'surround.vim'
 Plugin 'Syntastic'
 Plugin 'tpope/vim-fugitive'
 Plugin 'airblade/vim-gitgutter'
-Plugin 'jiangmiao/auto-pairs'
+"Plugin 'jiangmiao/auto-pairs'
+Plugin 'Raimondi/delimitMate'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'ervandew/supertab'
+Plugin 'AndrewRadev/linediff.vim'
+Plugin 'AndrewRadev/switch.vim'
+Plugin 'msanders/snipmate.vim'
+Plugin 'junegunn/vim-easy-align'
 
 " Look and feel
 Plugin 'Solarized'
+Plugin 'flazz/vim-colorschemes'
 Plugin 'bling/vim-airline'
+Plugin 'Shougo/unite.vim'
+Plugin 'ujihisa/unite-colorscheme'
 
 Plugin 'git://github.com/vim-scripts/matchit.zip'
 
@@ -138,16 +156,25 @@ let g:ctrlp_custom_ignore = {
 " Syntastic configs
 
 let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_enable_balloons = 0
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+let g:syntastic_loc_list_height=5
 
-let g:syntastic_javascript_checkers = ['jshint']
 let g:syntastic_ruby_checkers = ['mri']
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
 let g:syntastic_html_tidy_ignore_errors=[" proprietary attribute \"ng-"]
 let g:syntastic_mode_map={ 'mode': 'active',
-                         \ 'active_filetypes': ['ruby', 'javascript'],
-                         \ 'passive_filetypes': ['html'] }
+                         \ 'active_filetypes': ['ruby', 'javascript', 'typescript'],
+                         \ 'passive_filetypes': ['html', 'typescript'] }
+
+" yankring
+" ,y to show the yankring
+nmap <leader>y :YRShow<cr>
 
 
 " ┌───────────────────────────────────┐
@@ -163,10 +190,14 @@ autocmd FileType css        set omnifunc=csscomplete#CompleteCSS
 autocmd FileType xml        set omnifunc=xmlcomplete#CompleteTags
 autocmd FileType php        set omnifunc=phpcomplete#CompletePHP
 autocmd FileType c          set omnifunc=ccomplete#Complete
+autocmd FileType typescript set omnifunc=tsuquyomi#complete
 
 autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
 autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
 autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
+
+" Supertab
+let g:SuperTabDefaultCompletionType = "<c-n>"
 
 " Autoindent with two spaces, always expand tabs
 set tabstop=2
@@ -249,8 +280,10 @@ set nobackup
 set noswapfile
 
 "Font and colorscheme
+set t_Co=256
 set background=dark
-colorscheme solarized
+"colorscheme solarized
+colorscheme apprentice
 set guifont=Hack:h16
 
 " Syntax on
@@ -378,7 +411,8 @@ end
 if has('mac')
   let desktop_width = system("osascript -e 'tell application \"Finder\" to get bounds of window of desktop' | cut -d ',' -f 3 | xargs")
   if desktop_width > 1440
-    set guifont=Hack:h16
+    set guifont=Hack:h14
+    "set guifont=Hack:h16
   else
     set guifont=Hack:h14
   endif
