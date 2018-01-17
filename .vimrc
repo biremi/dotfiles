@@ -15,7 +15,7 @@ let mapleader = ","
 let g:mapleader = ","
 
 " Should be here ;(
-let g:neocomplcache_enable_at_startup = 1
+"let g:neocomplcache_enable_at_startup = 1
 
 "NeoBundle Scripts-----------------------------
 if &compatible
@@ -38,6 +38,7 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 NeoBundle 'vim-coffee-script'
 NeoBundle 'leafgarland/typescript-vim'
 NeoBundle 'Quramy/tsuquyomi'
+NeoBundle 'mxw/vim-jsx'
 
 " HTML
 NeoBundle 'mattn/emmet-vim'
@@ -60,13 +61,29 @@ NeoBundle 'rking/ag.vim'
 " Most recent files
 NeoBundle 'yegappan/mru'
 NeoBundle 'easymotion/vim-easymotion'
-NeoBundle 'Shougo/neocomplcache'
-NeoBundle 'Shougo/vimproc'
+"NeoBundle 'Shougo/neocomplcache'
+NeoBundle 'Shougo/vimproc.vim'
+NeoBundle 'marijnh/tern_for_vim', {
+            \ 'lazy': 1,
+            \ 'autoload': {
+            \   'filetypes': [
+            \       'javascript',
+            \   ],
+            \ },
+            \ 'build': {
+            \   'unix': 'npm install',
+            \ },
+            \}
+NeoBundle 'Valloric/YouCompleteMe'
+
+" Elixir and Phoenix
+NeoBundle 'elixir-lang/vim-elixir'
 
 " General programming
 NeoBundle 'surround.vim'
 NeoBundle 'Syntastic'
 NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'slim-template/vim-slim.git'
 NeoBundle 'airblade/vim-gitgutter'
 NeoBundle 'Raimondi/delimitMate'
 NeoBundle 'scrooloose/nerdcommenter'
@@ -83,6 +100,7 @@ NeoBundle 'bling/vim-airline'
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'ujihisa/unite-colorscheme'
 
+NeoBundle 'matchit.zip'
 "NeoBundle 'git://github.com/vim-scripts/matchit.zip'
 
 " Defaults
@@ -115,6 +133,9 @@ let g:rails_projections = {
 \ },
 \ "app/logics/*.rb": {
 \   "command": "logic",
+\ },
+\ "app/services/*.rb": {
+\   "command": "service",
 \ },
 \ "app/admin/*.rb": {
 \   "command": "admin",
@@ -158,11 +179,15 @@ let g:vroom_ignore_color_flag = 1
 " CtrlP
 let g:ctrlp_working_path_mode = 2
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip
+let g:ctrlp_max_depth=40
+let g:ctrlp_max_files=0
 let g:ctrlp_custom_ignore = {
   \ 'dir':  '\.git$\|\.hg$\|\.svn$',
   \ 'file': '\.exe$\|\.so$\|\.dll$',
   \ 'link': 'some_bad_symbolic_links',
   \ }
+
+"let g:jsx_ext_required = 0 " Allow JSX in normal JS files
 
 " Syntastic configs
 
@@ -180,13 +205,23 @@ let g:syntastic_ruby_checkers = ['mri']
 "set statusline+=%*
 let g:syntastic_html_tidy_ignore_errors=[" proprietary attribute \"ng-"]
 let g:syntastic_mode_map={ 'mode': 'active',
-                         \ 'active_filetypes': ['ruby', 'javascript', 'typescript'],
+                         \ 'active_filetypes': ['ruby', 'javascript'],
                          \ 'passive_filetypes': ['html', 'typescript'] }
+
+let g:tsuquyomi_disable_quickfix = 1
+let g:syntastic_typescript_checkers = ['tsuquyomi']
+let g:syntastic_javascript_checkers = ['eslint']
+let g:syntastic_javascript_eslint_exec = 'eslint_d'
+
+autocmd FileType typescript nmap <buffer> <Leader>e <Plug>(TsuquyomiRenameSymbol)
+autocmd FileType typescript nmap <buffer> <Leader>E <Plug>(TsuquyomiRenameSymbolC)
 
 " yankring
 " ,y to show the yankring
 nmap <leader>y :YRShow<cr>
 
+" Nerd commenter
+let NERDSpaceDelims=1
 
 " ┌───────────────────────────────────┐
 " │             Settings              │
@@ -202,14 +237,14 @@ autocmd FileType xml        set omnifunc=xmlcomplete#CompleteTags
 autocmd FileType php        set omnifunc=phpcomplete#CompletePHP
 autocmd FileType c          set omnifunc=ccomplete#Complete
 autocmd FileType typescript set omnifunc=tsuquyomi#complete
-autocmd FileType typescript setlocal completeopt+=menu,preview
 
 autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
 autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
 autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
 
 " Supertab
-let g:SuperTabDefaultCompletionType = "<c-n>"
+"let g:SuperTabDefaultCompletionType = "<c-n>"
+let g:SuperTabDefaultCompletionType = "<C-X><C-O>"
 
 " Autoindent with two spaces, always expand tabs
 set tabstop=2
@@ -345,7 +380,7 @@ nnoremap \i :Ag<SPACE>
 nnoremap K :Ag "\b<C-R><C-W>\b"<CR>:cw<CR>
 
 " Auto complete
-let g:stop_autocomplete=0
+let g:stop_autocomplete=1
 
 " Never used it ;)
 nnoremap Q <nop>
@@ -408,6 +443,9 @@ au BufNewFile,BufRead *.less       set filetype=css
 au BufNewFile,BufRead bash_profile set filetype=sh
 au BufNewFile,BufRead Capfile      set filetype=ruby
 au BufNewFile,BufRead *.hbs        set filetype=html
+au BufNewFile,BufRead *.ts         set filetype=typescript
+au BufNewFile,BufRead *.slim       set filetype=slim
+au BufNewFile,BufRead *.slimbars   set filetype=slim
 
 
 " ┌───────────────────────────────────┐
@@ -423,7 +461,7 @@ end
 if has('mac')
   let desktop_width = system("osascript -e 'tell application \"Finder\" to get bounds of window of desktop' | cut -d ',' -f 3 | xargs")
   if desktop_width > 1440
-    set guifont=Hack:h14
+    set guifont=Hack:h18
     "set guifont=Hack:h16
   else
     set guifont=Hack:h14

@@ -10,7 +10,9 @@ alias ll="ls -laG"
 alias e="mvim"
 
 alias gs="git status"
+alias пы="git status"
 alias gd="git diff"
+alias gdc="git diff --cached"
 alias gl="git pull"
 alias go="git checkout"
 alias ga="git add"
@@ -18,6 +20,8 @@ alias gb="git branch"
 alias gc='git commit'
 alias gcm='git commit -m'
 alias gpuh="git push origin head"
+alias gpuf="git push origin head -f"
+alias game='git commit --amend'
 
 alias be="bundle exec"
 alias ber="bundle exec rspec"
@@ -25,6 +29,10 @@ alias ztest="zeus test"
 alias jtest="TZ='US/Pacific' spring rake spec:javascript"
 alias jber="JS_DRIVER=selenium bundle exec rspec"
 alias bcm="bb-flow commit -m"
+alias pgb="psql -d benchdex_development"
+alias pgbb="pgcli -d benchdex_development"
+alias pg_qres="pg_restore -cOvd benchdex_development"
+
 
 #Redis
 alias redisstart='sudo launchctl start io.redis.redis-server'
@@ -76,9 +84,11 @@ PS1+="\[$NO_COLOUR\]\$ "                                   # '#' for root, else 
 export PS1
 
 export EDITOR='mvim -f'
-source ~/Work/brightbytes/brightbytes/.env
-source ~/Work/brightbytes/dpl-admin/.env
-source ~/Work/brightbytes/common-ui/.env
+#source ~/Work/brightbytes/brightbytes/.env
+#source ~/Work/brightbytes/pipeline/.env
+#source ~/Work/brightbytes/common-ui/.env
+#source ~/Work/brightbytes/fin-public/.env
+#source ~/Work/brightbytes/fin-api/.env
 #source ~/.oh-my-git/prompt.sh
 
 #bash completions
