@@ -14,9 +14,6 @@ end
 let mapleader = ","
 let g:mapleader = ","
 
-" Should be here ;(
-"let g:neocomplcache_enable_at_startup = 1
-
 "NeoBundle Scripts-----------------------------
 if &compatible
   set nocompatible               " Be iMproved
@@ -38,7 +35,9 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 NeoBundle 'vim-coffee-script'
 NeoBundle 'leafgarland/typescript-vim'
 NeoBundle 'Quramy/tsuquyomi'
+NeoBundle 'pangloss/vim-javascript'
 NeoBundle 'mxw/vim-jsx'
+NeoBundle 'othree/javascript-libraries-syntax.vim'
 
 " HTML
 NeoBundle 'mattn/emmet-vim'
@@ -51,17 +50,14 @@ NeoBundle 'endwise.vim'
 NeoBundle 'rake.vim'
 NeoBundle 'jgdavey/vim-blockle'
 
-" Async and specs
-NeoBundle 'tpope/vim-dispatch'
-NeoBundle 'skalnik/vim-vroom'
+" Specs
+NeoBundle 'thoughtbot/vim-rspec'
 
 " Navigate and search
 NeoBundle 'ctrlpvim/ctrlp.vim'
 NeoBundle 'rking/ag.vim'
-" Most recent files
 NeoBundle 'yegappan/mru'
 NeoBundle 'easymotion/vim-easymotion'
-"NeoBundle 'Shougo/neocomplcache'
 NeoBundle 'Shougo/vimproc.vim'
 NeoBundle 'marijnh/tern_for_vim', {
             \ 'lazy': 1,
@@ -75,9 +71,7 @@ NeoBundle 'marijnh/tern_for_vim', {
             \ },
             \}
 NeoBundle 'Valloric/YouCompleteMe'
-
-" Elixir and Phoenix
-NeoBundle 'elixir-lang/vim-elixir'
+NeoBundle 'scrooloose/nerdtree'
 
 " General programming
 NeoBundle 'surround.vim'
@@ -97,15 +91,9 @@ NeoBundle 'junegunn/vim-easy-align'
 NeoBundle 'Solarized'
 NeoBundle 'flazz/vim-colorschemes'
 NeoBundle 'bling/vim-airline'
-NeoBundle 'Shougo/unite.vim'
-NeoBundle 'ujihisa/unite-colorscheme'
 
 NeoBundle 'matchit.zip'
-"NeoBundle 'git://github.com/vim-scripts/matchit.zip'
-
-" Defaults
-"NeoBundle 'Shougo/neosnippet.vim'
-"NeoBundle 'Shougo/neosnippet-snippets'
+NeoBundle 'JamshedVesuna/vim-markdown-preview'
 
 " You can specify revision/branch/tag.
 NeoBundle 'Shougo/vimshell', { 'rev' : '3787e5' }
@@ -144,7 +132,7 @@ let g:rails_projections = {
 \ },
 \ "config/*.rb": { "command": "config"  },
 \ "spec/support/*.rb": {"command": "support"},
-\ "spec/features/*_spec.rb": {
+\ "spec/features/client/*_spec.rb": {
 \   "command": "feature",
 \   "template": "require 'spec_helper'\n\nfeature '%h' do\n\nend",
 \ },
@@ -160,26 +148,25 @@ let g:rails_projections = {
 \   "related": "app/models/%s.rb",
 \   "template": "class %SSerializer < ActiveModel::Serializer\nend"
 \ },
-\ "app/assets/javascripts/clarity/*_controller.js": {
-\   "command": "jcon",
-\   "template": "(function( window, angular ) {\n  'use strict';\n\n  angular.module('BrightBytes.clarity.myModuleName').controller('MyModuleFeatureCtrl',  [\n    '$scope',\n    function($scope) {\n      // do stuff here\n    }\n  ]);\n\n})(window, angular);"
-\ },
-\ "app/assets/javascripts/clarity/*_config.js": {
-\   "command": "jcnf"
-\ },
-\ "app/assets/javascripts/clarity/templates/*.html": {
-\   "command": "jview"
+\ "app/assets/javascripts/quorso/*/index.jsx": {
+\   "command": "component"
 \ }}
 
+" RSpec.vim mappings
+map <Leader>t :call RunCurrentSpecFile()<CR>
+map <Leader>s :call RunNearestSpec()<CR>
+map <Leader>l :call RunLastSpec()<CR>
 
-" Vroom mappings
-let g:vroom_use_dispatch = 1
-let g:vroom_ignore_color_flag = 1
+let g:rspec_command = "be rspec {spec}"
+let g:rspec_runner = "os_x_iterm2"
+
+"Javascript libraries
+let g:used_javascript_libs = 'jquery,underscore,react'
 
 " CtrlP
 let g:ctrlp_working_path_mode = 2
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip
-let g:ctrlp_max_depth=40
+let g:ctrlp_max_depth=10
 let g:ctrlp_max_files=0
 let g:ctrlp_custom_ignore = {
   \ 'dir':  '\.git$\|\.hg$\|\.svn$',
@@ -187,7 +174,7 @@ let g:ctrlp_custom_ignore = {
   \ 'link': 'some_bad_symbolic_links',
   \ }
 
-"let g:jsx_ext_required = 0 " Allow JSX in normal JS files
+" let g:jsx_ext_required = 0 " Allow JSX in normal JS files
 
 " Syntastic configs
 
@@ -200,9 +187,6 @@ let g:syntastic_loc_list_height=5
 
 let g:syntastic_ruby_checkers = ['mri']
 
-"set statusline+=%#warningmsg#
-"set statusline+=%{SyntasticStatuslineFlag()}
-"set statusline+=%*
 let g:syntastic_html_tidy_ignore_errors=[" proprietary attribute \"ng-"]
 let g:syntastic_mode_map={ 'mode': 'active',
                          \ 'active_filetypes': ['ruby', 'javascript'],
@@ -212,6 +196,10 @@ let g:tsuquyomi_disable_quickfix = 1
 let g:syntastic_typescript_checkers = ['tsuquyomi']
 let g:syntastic_javascript_checkers = ['eslint']
 let g:syntastic_javascript_eslint_exec = 'eslint_d'
+
+let g:ale_linters = {
+\   'javascript': ['eslint'],
+\}
 
 autocmd FileType typescript nmap <buffer> <Leader>e <Plug>(TsuquyomiRenameSymbol)
 autocmd FileType typescript nmap <buffer> <Leader>E <Plug>(TsuquyomiRenameSymbolC)
@@ -242,9 +230,17 @@ autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
 autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
 autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
 
+" Auto complete
+let g:stop_autocomplete=1
+let g:ycm_autoclose_preview_window_after_insertion = 1
+let g:ycm_autoclose_preview_window_after_completion = 1
+
+set completeopt-=preview
+
 " Supertab
 "let g:SuperTabDefaultCompletionType = "<c-n>"
 let g:SuperTabDefaultCompletionType = "<C-X><C-O>"
+let g:SuperTabClosePreviewOnPopupClose = 1
 
 " Autoindent with two spaces, always expand tabs
 set tabstop=2
@@ -277,7 +273,7 @@ set nu " Line numbers on
 set wrap " Line wrapping on
 set timeoutlen=250 " Time to wait after ESC (default causes an annoying delay)
 set showcmd
-set showmode
+set noshowmode
 set lines=200
 set columns=200
 
@@ -302,17 +298,6 @@ vmap > >gv
 " inoremap <Down> <nop>
 " inoremap <Left> <nop>
 " inoremap <Right> <nop>
-
-" Highlight long lines
-" let w:m2=matchadd('Search',   '\%>80v.\+', -1)
-" let w:m2=matchadd('ErrorMsg', '\%>80v.\+', -1)
-
-" Relative line numbers in normal mode
-" set rnu
-" au InsertEnter * :set nu
-" au InsertLeave * :set rnu
-" au FocusLost * :set nu
-" au FocusGained * :set rnu
 
 " Ignore case in searches
 set ignorecase
@@ -349,6 +334,8 @@ set tags+=./tags
 " Airline hook
 set laststatus=2
 
+let vim_markdown_preview_github=1
+
 " ┌───────────────────────────────────┐
 " │             Functions             │
 " └───────────────────────────────────┘
@@ -378,12 +365,6 @@ nnoremap \i :Ag<SPACE>
 
 " Bind K to search for the word under cursor
 nnoremap K :Ag "\b<C-R><C-W>\b"<CR>:cw<CR>
-
-" Auto complete
-let g:stop_autocomplete=1
-
-" Never used it ;)
-nnoremap Q <nop>
 
 " Make debugger statements painfully obvious
 au BufEnter *.rb syn match error contained "\<binding.pry\>"
@@ -439,11 +420,13 @@ au BufNewFile,BufRead *.pp         set filetype=ruby
 au BufNewFile,BufRead *.prawn      set filetype=ruby
 au BufNewFile,BufRead Appraisals   set filetype=ruby
 au BufNewFile,BufRead .psqlrc      set filetype=sql
+au BufNewFile,BufRead .sql         set filetype=sql
 au BufNewFile,BufRead *.less       set filetype=css
 au BufNewFile,BufRead bash_profile set filetype=sh
 au BufNewFile,BufRead Capfile      set filetype=ruby
 au BufNewFile,BufRead *.hbs        set filetype=html
 au BufNewFile,BufRead *.ts         set filetype=typescript
+au BufNewFile,BufRead *.jsx        set filetype=javascript.jsx
 au BufNewFile,BufRead *.slim       set filetype=slim
 au BufNewFile,BufRead *.slimbars   set filetype=slim
 

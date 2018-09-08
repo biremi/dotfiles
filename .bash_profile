@@ -28,11 +28,9 @@ alias ber="bundle exec rspec"
 alias ztest="zeus test"
 alias jtest="TZ='US/Pacific' spring rake spec:javascript"
 alias jber="JS_DRIVER=selenium bundle exec rspec"
-alias bcm="bb-flow commit -m"
 alias pgb="psql -d benchdex_development"
 alias pgbb="pgcli -d benchdex_development"
-alias pg_qres="pg_restore -cOvd benchdex_development"
-
+alias rtags="ctags -R --exclude=.git --exclude=log *"
 
 #Redis
 alias redisstart='sudo launchctl start io.redis.redis-server'
