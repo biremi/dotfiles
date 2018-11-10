@@ -1,0 +1,232 @@
+
+" ┌───────────────────────────────────┐
+" │             Vim-Plug              │
+" └───────────────────────────────────┘
+
+call plug#begin('~/.vim/plugged')
+
+" General programming
+Plug 'tpope/vim-surround'
+Plug 'scrooloose/nerdcommenter'
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
+Plug 'valloric/youcompleteme'
+
+" Rails and Ruby
+Plug 'vim-ruby/vim-ruby'
+Plug 'tpope/vim-rails'
+Plug 'tpope/vim-endwise'
+Plug 'jgdavey/vim-blockle'
+Plug 'w0rp/ale'
+
+" Look and feel
+Plug 'rafi/awesome-vim-colorschemes'
+Plug 'bling/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+
+" Other
+Plug 'yegappan/mru'
+
+call plug#end()
+
+" ┌───────────────────────────────────┐
+" │              Global               │
+" └───────────────────────────────────┘
+
+filetype plugin indent on
+
+"Set mapleader
+let mapleader = ","
+let g:mapleader = ","
+
+" ┌───────────────────────────────────┐
+" │       Plugins customizations      │
+" └───────────────────────────────────┘
+
+" Nerd commenter
+let NERDSpaceDelims = 1
+
+" Rails.vim projections
+let g:rails_projections = {
+\ "config/projections.json": {
+\   "command": "projections"
+\ },
+\ "app/services/*.rb": {
+\   "command": "service",
+\ },
+\ "app/admin/*.rb": {
+\   "command": "admin",
+\   "affinity": "model",
+\   "related": "app/models/%s.rb",
+\ },
+\ "config/*.rb": { "command": "config"  },
+\ "spec/features/client/*_spec.rb": {
+\   "command": "feature",
+\   "template": "require 'spec_helper'\n\nfeature '%h' do\n\nend",
+\ },
+\ "spec/factories/*.rb": {
+\   "command": "factory",
+\   "affinity": "model",
+\   "related": "app/models/%s.rb",
+\ },
+\ "app/serializers/*_serializer.rb": {
+\   "command": "serializer",
+\   "affinity": "model",
+\   "test": "spec/serializers/%s_spec.rb",
+\   "related": "app/models/%s.rb",
+\   "template": "class %SSerializer < ActiveModel::Serializer\nend"
+\ },
+\ "app/assets/javascripts/quorso/*/index.jsx": {
+\   "command": "component"
+\ }}
+
+let g:airline_theme = 'solarized'
+let g:airline_solarized_bg='dark'
+
+" Enable completion where available.
+" let g:ale_completion_enabled = 1
+
+" ┌───────────────────────────────────┐
+" │             Settings              │
+" └───────────────────────────────────┘
+
+set nu " Line numbers on
+set wrap " Line wrapping on
+set clipboard+=unnamed " Yanks go on clipboard instead.
+
+" Ignore case in searches
+set ignorecase
+
+" Autoindent with two spaces, always expand tabs
+set tabstop=2
+set shiftwidth=2
+set expandtab
+
+" Syntax on
+syntax on
+
+" Look and feel
+set t_Co=256
+set background=dark
+colorscheme apprentice
+
+set mouse=
+set mousehide               " Hide the mouse cursor while typing
+
+" Annoying visualbel
+set visualbell t_vb=
+
+" Never ever let Vim write a backup file! They did that in the 70’s.
+" Use modern ways for tracking your changes (like git), for God’s sake
+set nobackup
+set noswapfile
+
+"" Vmap for maintain Visual Mode after shifting > and <
+vmap < <gv
+vmap > >gv
+
+" Ctags
+set tags+=./tags
+
+" ┌───────────────────────────────────┐
+" │             Functions             │
+" └───────────────────────────────────┘
+
+" Highlighting trailing spaces
+highlight ExtraWhitespace ctermbg=red guibg=red
+au ColorScheme * highlight ExtraWhitespace guibg=red
+au BufEnter * match ExtraWhitespace /\s\+$/
+au InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+au InsertLeave * match ExtraWhitespace /\s\+$/
+
+" Removes trailing spaces
+function! TrimWhiteSpace()
+  %s/\s*$//
+  ''
+:endfunction
+
+set list listchars=tab:»·,trail:·
+
+map <leader>= :call TrimWhiteSpace()<CR>
+map! <leader>= :call TrimWhiteSpace()<CR>
+
+" Make debugger statements painfully obvious
+au BufEnter *.rb syn match error contained "\<binding.pry\>"
+
+" Auto save
+autocmd BufLeave,FocusLost * silent! update
+
+" ┌───────────────────────────────────┐
+" │             Shortcuts             │
+" └───────────────────────────────────┘
+
+" Handy
+cnoremap w!! %!sudo tee > /dev/null %
+
+" Ctrl+L clear the highlight as well as redraw
+nnoremap <C-L> :nohls<CR><C-L>
+
+" Improve 'n' command (for searches)
+nmap n nzz
+nmap N Nzz
+
+" Quickfix window
+map <Leader>q :copen<CR>
+map <Leader>qq :ccl<CR>
+" MRU
+map <Leader>f :MRU<CR>
+
+" ┌───────────────────────────────────┐
+" │              Aliases              │
+" └───────────────────────────────────┘
+
+cab W w
+cab Q q
+cab Wq wq
+cab wQ wq
+cab WQ wq
+cab E Explore
+
+" ┌───────────────────────────────────┐
+" │        Syntax Highlighting        │
+" └───────────────────────────────────┘
+
+au BufNewFile,BufRead *.thor       set filetype=ruby
+au BufNewFile,BufRead Guardfile    set filetype=ruby
+au BufNewFile,BufRead .pryrc       set filetype=ruby
+au BufNewFile,BufRead Vagrantfile  set filetype=ruby
+au BufNewFile,BufRead *.pp         set filetype=ruby
+au BufNewFile,BufRead *.prawn      set filetype=ruby
+au BufNewFile,BufRead .psqlrc      set filetype=sql
+au BufNewFile,BufRead .sql         set filetype=sql
+au BufNewFile,BufRead *.less       set filetype=css
+au BufNewFile,BufRead bash_profile set filetype=sh
+au BufNewFile,BufRead Capfile      set filetype=ruby
+au BufNewFile,BufRead *.hbs        set filetype=html
+au BufNewFile,BufRead *.ts         set filetype=typescript
+au BufNewFile,BufRead *.jsx        set filetype=javascript.jsx
+
+" ┌───────────────────────────────────┐
+" │           Custom Stuff            │
+" └───────────────────────────────────┘
+"
+
+if has("gui_running")
+  set fuopt+=maxhorz
+  set lines=999 columns=999
+end
+
+" ┌───────────────────────────────────┐
+" │             Test things           │
+" └───────────────────────────────────┘
+
+" Forcing the use of hjkl keys to navigate
+" noremap <Up> <nop>
+" noremap <Down> <nop>
+" noremap <Left> <nop>
+" noremap <Right> <nop>
+" inoremap <Up> <nop>
+" inoremap <Down> <nop>
+" inoremap <Left> <nop>
+" inoremap <Right> <nop>
+
