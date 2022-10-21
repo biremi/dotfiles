@@ -1,3 +1,4 @@
+set encoding=utf-8
 
 " ┌───────────────────────────────────┐
 " │             Vim-Plug              │
@@ -11,6 +12,7 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 Plug 'valloric/youcompleteme'
+Plug 'jiangmiao/auto-pairs'
 
 " Rails and Ruby
 Plug 'vim-ruby/vim-ruby'
@@ -19,6 +21,11 @@ Plug 'tpope/vim-endwise'
 Plug 'jgdavey/vim-blockle'
 Plug 'w0rp/ale'
 
+" JSX
+Plug 'pangloss/vim-javascript'
+Plug 'maxmellon/vim-jsx-pretty'
+" Plug 'mxw/vim-jsx'
+
 " Look and feel
 Plug 'rafi/awesome-vim-colorschemes'
 Plug 'bling/vim-airline'
@@ -26,6 +33,15 @@ Plug 'vim-airline/vim-airline-themes'
 
 " Other
 Plug 'yegappan/mru'
+Plug 'scrooloose/nerdtree'
+Plug 'rking/ag.vim'
+Plug 'vim-scripts/dbext.vim'
+Plug 'hashivim/vim-terraform'
+Plug 'stephpy/vim-yaml'
+
+" FZF
+Plug '/usr/local/opt/fzf'
+Plug 'junegunn/fzf.vim'
 
 call plug#end()
 
@@ -111,7 +127,7 @@ set background=dark
 colorscheme apprentice
 
 set mouse=
-set mousehide               " Hide the mouse cursor while typing
+set mousehide " Hide the mouse cursor while typing
 
 " Annoying visualbel
 set visualbell t_vb=
@@ -174,7 +190,16 @@ nmap N Nzz
 map <Leader>q :copen<CR>
 map <Leader>qq :ccl<CR>
 " MRU
-map <Leader>f :MRU<CR>
+" map <Leader>f :MRU<CR>
+
+" FZF
+nmap <Leader>f :GFiles<CR>
+nmap <Leader>F :Files<CR>
+nmap <Leader>b :Buffers<CR>
+nmap <Leader>h :History<CR>
+
+" nerdtree
+nmap <Leader>t :NERDTreeToggle<CR>
 
 " ┌───────────────────────────────────┐
 " │              Aliases              │
@@ -204,17 +229,7 @@ au BufNewFile,BufRead bash_profile set filetype=sh
 au BufNewFile,BufRead Capfile      set filetype=ruby
 au BufNewFile,BufRead *.hbs        set filetype=html
 au BufNewFile,BufRead *.ts         set filetype=typescript
-au BufNewFile,BufRead *.jsx        set filetype=javascript.jsx
-
-" ┌───────────────────────────────────┐
-" │           Custom Stuff            │
-" └───────────────────────────────────┘
-"
-
-if has("gui_running")
-  set fuopt+=maxhorz
-  set lines=999 columns=999
-end
+au BufNewFile,BufRead *.jsx        set filetype=javascriptreact
 
 " ┌───────────────────────────────────┐
 " │             Test things           │
